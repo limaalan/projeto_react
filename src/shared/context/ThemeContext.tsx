@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useMemo, useState } from "react";
+import React, { createContext, useCallback, useMemo, useState, useContext } from "react";
 import { ThemeProvider } from "@emotion/react";
 import { DarkTheme, LightTheme } from "../themes";
 import { Box } from "@mui/system";
@@ -12,6 +12,10 @@ interface IAppThemeProvider{
 }
 
 const ThemeContext = createContext ({}as IThemeContextData);
+
+export const useAppThemeContext = () =>{
+    return useContext(ThemeContext);
+}
 
 export const AppThemeProvider : React.FC <IAppThemeProvider>= ({ children}) =>{
     const [themeName, setThemeName] = useState<'light'|'dark'>('light');
