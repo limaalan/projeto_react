@@ -3,15 +3,18 @@ import { AppRoutes } from "./routes";
 import { DarkTheme, LightTheme } from "./shared/themes";
 import { AppThemeProvider } from "./shared/context/ThemeContext";
 import { MenuLateral } from "./shared/components";
+import { DrawerProvider } from "./shared/context";
 
 export const App = () => {
   return (
     <AppThemeProvider>
-      <BrowserRouter>
-        <MenuLateral>
-          <AppRoutes />
-		</MenuLateral>
-      </BrowserRouter>
+      <DrawerProvider>
+        <BrowserRouter>
+          <MenuLateral>
+            <AppRoutes />
+          </MenuLateral>
+        </BrowserRouter>
+      </DrawerProvider>
     </AppThemeProvider>
   );
 };
