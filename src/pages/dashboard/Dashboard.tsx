@@ -1,9 +1,16 @@
 import { LayoutBaseDePagina } from "../../shared/layouts";
-
-export const Dashboard = () =>{
-    return (
-        <LayoutBaseDePagina titulo="Sou o dashboard">
-            Testando
-        </LayoutBaseDePagina>
-    );
-}
+import { BarraDeFerramentas } from "../../shared/components";
+export const Dashboard = () => {
+  return (
+    <LayoutBaseDePagina
+      titulo="Sou o dashboard"
+      barraDeFerramentas={
+        <BarraDeFerramentas
+            mostrarInputBusca
+            textoBotaoNovo="Nova"
+        />}
+    >
+      Testando
+    </LayoutBaseDePagina>
+  );
+};
