@@ -18,7 +18,9 @@ export const FerramentasDaListagem: React.FC<IFerramentasDaListagemProps> = ({
   textoBotaoNovo = "Novo",
   mostrarBotaoNovo = "true",
 }) => {
+
   const theme = useTheme();
+  
   return (
     <Box
       component={Paper}
