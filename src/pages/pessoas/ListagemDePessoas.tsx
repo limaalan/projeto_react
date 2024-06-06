@@ -6,6 +6,7 @@ import { IListagemPessoa, PessoasService } from "../../shared/services/api/pesso
 import { FerramentasDaListagem } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { useDebounce } from "../../shared/hooks";
+import { Environment } from "../../shared/environment";
 
 export const ListagemDePessoas: React.FC = () => {
   const [searchParams , setSearchParams] = useSearchParams();
@@ -74,10 +75,18 @@ export const ListagemDePessoas: React.FC = () => {
 
           </TableBody>
 
+          {totalCount===0 && !isLoading &&(
+            <caption>{Environment.LISTAGEM_VAZIA}</caption>
+          )}
+
           <TableFooter>
-            {isLoading && (
-              <LinearProgress variant="indeterminate"/>
-            )}
+                {isLoading && (
+                  <TableRow>
+                    <TableCell colSpan={3}>
+                      <LinearProgress variant="indeterminate"/>
+                    </TableCell>
+                  </TableRow>
+                )}
           </TableFooter>
         </Table>
       </TableContainer>
