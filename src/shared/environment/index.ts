@@ -15,6 +15,10 @@ export const Environment ={
      * URL base da API
      */
     URL_BASE : 'http://localhost:3333',
+    /**
+     * Tempo de espera enquanto o usuário digia a pesquisa antes de realizar uma requisição.
+     */
+    DEBOUNCE_TIME: 1000,
 
 
 }
