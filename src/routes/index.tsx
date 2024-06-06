@@ -3,9 +3,9 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { useAppThemeContext, useDrawerContext} from '../shared/context';
+import { useDrawerContext} from '../shared/context';
 import { useEffect } from 'react';
-import { Dashboard } from '../pages';
+import { Dashboard, ListagemDePessoas } from '../pages';
 
 export const AppRoutes = ()=>{
     const {setDrawerOptions} = useDrawerContext();
@@ -18,10 +18,11 @@ export const AppRoutes = ()=>{
                 path:'/pagina-inicial'
             },
             {
-                label:'Outra página',
-                icon: 'question_mark',
-                path:'/outra-pagina'
+                label:'Pessoas',
+                icon: 'people',
+                path:'/pessoas'
             }
+            
         ])
     },[]);
 
@@ -29,7 +30,9 @@ export const AppRoutes = ()=>{
     return(
         <Routes>
             <Route path ='/pagina-inicial' element = { <Dashboard/> }/>
-            {/* <Route path = "*" element = {<Navigate to="/pagina-inicial"/>} /> */}
+            <Route path ='/pessoas' element = { <ListagemDePessoas/> }/>
+            {/* <Route path ='/cidades/detalhe/:id' element = { <Dashboard/> }/> */}
+            <Route path = "*" element = {<Navigate to="/pagina-inicial"/>} />
         </Routes>
     )
 
