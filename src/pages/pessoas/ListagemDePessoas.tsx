@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-import { LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from "@mui/material";
+import { LinearProgress, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from "@mui/material";
 
 import { IListagemPessoa, PessoasService } from "../../shared/services/api/pessoas/PessoasService";
 import { FerramentasDaListagem } from "../../shared/components";
@@ -16,31 +16,31 @@ export const ListagemDePessoas: React.FC = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading,setIsLoading] = useState(true);
 
-    const busca = useMemo(()=>{
-        return searchParams.get('busca') ||''
-    },[searchParams]);
+  const busca = useMemo(()=>{
+      return searchParams.get('busca') ||''
+  },[searchParams]);
     
+  const pagina = useMemo(()=>{
+    return Number(searchParams.get('pagina') ||'1')
+  },[searchParams]);
 
-    useEffect(()=>{
-      setIsLoading(true);
 
-      debounce(()=>{
-
-              PessoasService.getAll(undefined, undefined, busca)
-              .then((result)=>{
-                // Finalizou a consulta, muda 'isLoading' pra falso
-                setIsLoading(false);
-
-                if(result instanceof Error){ alert (result.message);}
-                else {
-                  (console.log(result));
-                  setRows(result.data)
-                  setTotalCount(result.totalCount)
-                }
-              })
-      })
-
-    },[busca])
+  useEffect(()=>{
+    setIsLoading(true);
+    debounce(()=>{
+      PessoasService.getAll(pagina, undefined, busca)
+        .then((result)=>{
+          // Finalizou a consulta, muda 'isLoading' pra falso
+          setIsLoading(false);
+            if(result instanceof Error){ alert (result.message);}
+            else {
+              (console.log(result));
+              setRows(result.data)
+              setTotalCount(result.totalCount)
+            }
+        })
+    })
+  },[busca,pagina])
     
   return (
     <LayoutBaseDePagina
@@ -50,7 +50,7 @@ export const ListagemDePessoas: React.FC = () => {
                 mostrarInputBusca
                 textoBotaoNovo="Nova"
                 textoDaBusca={busca}
-                aoMudarTextoDeBusca={texto=>setSearchParams({busca:texto})}
+                aoMudarTextoDeBusca={texto=>setSearchParams({busca:texto , pagina:'1'})}
           />}   >
       <TableContainer component={Paper} variant="outlined" sx={{margin:1 , width:'auto'}}>
         <Table>
@@ -87,6 +87,21 @@ export const ListagemDePessoas: React.FC = () => {
                     </TableCell>
                   </TableRow>
                 )}
+                {totalCount> Environment.LIMITE_DE_LINHAS && !isLoading &&(
+
+                  <TableRow>
+                    <TableCell colSpan={3}>
+                      <Pagination 
+                        count = {Math.ceil(totalCount/Environment.LIMITE_DE_LINHAS)}
+                        page = {pagina}
+                        onChange= {(e,newPage)=>{
+                          setSearchParams({busca, pagina:newPage.toString()}, {replace:true})
+                        }}
+                      />
+                    </TableCell>
+                </TableRow>
+                )}
+
           </TableFooter>
         </Table>
       </TableContainer>
