@@ -8,6 +8,8 @@
     "@fontsource/roboto": "^5.0.13",
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
+    "@unform/core": "^2.1.6",
+    "@unform/web": "^2.1.6",
     "axios": "^1.7.2",
     "cross-env": "^7.0.3",
     "http-status-codes": "^2.3.0",
