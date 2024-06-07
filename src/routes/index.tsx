@@ -5,7 +5,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { useDrawerContext} from '../shared/context';
 import { useEffect } from 'react';
-import { Dashboard, ListagemDePessoas } from '../pages';
+import { Dashboard, ListagemDePessoas, DetalhePessoas } from '../pages';
 
 export const AppRoutes = ()=>{
     const {setDrawerOptions} = useDrawerContext();
@@ -31,7 +31,8 @@ export const AppRoutes = ()=>{
         <Routes>
             <Route path ='/pagina-inicial' element = { <Dashboard/> }/>
             <Route path ='/pessoas' element = { <ListagemDePessoas/> }/>
-            <Route path ='/pessoa/detalhe/:id' element = { <p> detalhe </p> }/>
+            <Route path ='/pessoas/detalhe/:id' element = { <DetalhePessoas/> }/>
+            {/* <Route path ='/pessoa/detalhe/nova' element = { <p> nova pessoa</p> }/> */}
             {/* <Route path ='/cidades/detalhe/:id' element = { <Dashboard/> }/> */}
             {/* <Route path = "*" element = {<Navigate to="/pagina-inicial"/>} /> */}
         </Routes>
