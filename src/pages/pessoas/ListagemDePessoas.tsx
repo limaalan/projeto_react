@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { Icon, IconButton, LinearProgress, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from "@mui/material";
 
@@ -11,6 +11,7 @@ import { Environment } from "../../shared/environment";
 export const ListagemDePessoas: React.FC = () => {
   const [searchParams , setSearchParams] = useSearchParams();
   const {debounce} = useDebounce();
+  const navigate = useNavigate();
 
   const [rows, setRows] = useState<IListagemPessoa[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -43,10 +44,17 @@ export const ListagemDePessoas: React.FC = () => {
   },[busca,pagina])
     
   const handleDelete = (id:number)=>{
+    // eslint-disable-next-line no-restricted-globals
     if (confirm('Deseja apagar o registro ?')){
       PessoasService.deleteById(id)
         .then(result =>{
-          if (result instanceof Error) { alert (result.message)}
+          if (result instanceof Error) {
+            alert (result.message)
+          }else {
+            setRows(oldrows=>[ ...oldrows.filter(oldrow=> oldrow.id!==id)])
+            alert("Registro apagado com sucesso")
+
+          }
         });
     };
   }
@@ -76,10 +84,19 @@ export const ListagemDePessoas: React.FC = () => {
           
             <TableRow key = {row.id}>
               <TableCell sx={{padding:0}}>
-                <IconButton size = 'small' onClick={()=> handleDelete(row.id)}
+                
+                <IconButton 
+                  size = 'small' 
+                  onClick={()=> handleDelete(row.id)}>
+                    <Icon>delete</Icon>
+                </IconButton>
 
-                ><Icon>delete</Icon></IconButton>
-                <IconButton size = 'small'><Icon>edit</Icon></IconButton>
+                <IconButton 
+                  size = 'small'
+                  onClick={()=>navigate(`/pessoas/detalhe/${row.id}`)}>
+                    <Icon>edit</Icon>
+                </IconButton>
+
               </TableCell>
               <TableCell>{row.nomeCompleto}</TableCell>
               <TableCell>{row.email}</TableCell>
