@@ -3,7 +3,7 @@ import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { useEffect, useRef, useState } from "react";
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
-import { LinearProgress, TextField } from "@mui/material";
+import { Box, Grid, LinearProgress, Paper, TextField, Typography } from "@mui/material";
 import { Form } from "@unform/web";
 import { VTextField } from "../../shared/forms";
 import { FormHandles } from "@unform/core";
@@ -119,17 +119,55 @@ export const DetalhePessoas: React.FC = () => {
         onPointerEnterCapture={undefined} 
         onPointerLeaveCapture={undefined}
         ref ={formRef} >
-        
-        <VTextField placeholder = "Nome Completo " name="nomeCompleto" />
-        <VTextField placeholder= "Email" name="email" />
-        <VTextField placeholder= "Cidade ID" name="cidadeId" />
+        <Box
+          margin={1}
+          component={Paper}
+          variant='outlined'
+          display='flex'
+          flexDirection='column'
+        >
+          <Grid container direction='column' padding={2} spacing={2}>
 
+            {isLoading&&(
+              <Grid item> <LinearProgress variant='indeterminate'></LinearProgress></Grid>
+            )}
+
+            <Grid item> <Typography variant='h6'> Geral </Typography></Grid>
+
+            <Grid container item direction='row'spacing={2}>
+              <Grid item xs={12} sm = {8} md = {6} lg = {4} xl = {4}>
+                <VTextField 
+                  disabled= {isLoading}
+                  fullWidth
+                  label = "Nome Completo "
+                  name="nomeCompleto"
+                  onChange={e=>setNome(e.target.value)} />
+              </Grid>
+
+              {/* Exemplo
+              <Grid item xs={8}>
+                <VTextField disabled= {isLoading} fullWidth placeholder = "Teste" name="teste" />
+              </Grid> */}
+
+            </Grid>
+
+            <Grid container item direction='row'spacing={2}>
+              <Grid item xs = {12} sm = {8} md = {6} lg = {4} xl = {4}>
+                <VTextField disabled= {isLoading} fullWidth label= "Email" name="email" />
+
+              </Grid>
+            </Grid>
+
+            <Grid container item direction='row'spacing={2}>
+              <Grid item xs={12} sm = {8} md = {6} lg = {4} xl = {4}>
+                <VTextField disabled= {isLoading} fullWidth label= "Cidade" name="cidadeId" />
+
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
       </Form>
 
-      {isLoading&&(
-        <LinearProgress variant='indeterminate'/>
-      )}
-      
     </LayoutBaseDePagina>
   );
 };
