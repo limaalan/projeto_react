@@ -10,7 +10,7 @@ import { FormHandles } from "@unform/core";
 
 interface IFormData {
   email: string 
-  cidadeId: string 
+  cidadeId: number 
   nomeCompleto:string
 }
 
@@ -23,8 +23,36 @@ export const DetalhePessoas: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
 
-  const hadleSave = (dados:IFormData) => {
-    console.log(dados);
+  const handleSave = (dados:IFormData) => {
+    
+    setIsLoading(true);
+    if ( id ==='nova'){
+      PessoasService
+        .create(dados)
+        .then((result)=>{
+          
+          setIsLoading(false);
+          if (result instanceof Error){
+            alert(result.message)
+          } else {
+            console.log(`Testando ${result}`);
+            navigate(`/pessoas/detalhe/${result}`) // Após criar, navega para a página de detalhes da pessoa
+          }
+        })
+      console.log(dados);
+    } else {
+      PessoasService
+        .updateById({id:Number(id), ...dados })
+        .then((result)=>{
+          
+          setIsLoading(false);
+          if (result instanceof Error){
+            alert(result.message)
+          } else {
+            //navigate(`/pessoas/detalhe/${id}`) // Após editar, navega para a página de detalhes da pessoa
+          }
+        })
+    }
   };
   const hadleDelete = (id: number) => {
     // eslint-disable-next-line no-restricted-globals
@@ -44,15 +72,18 @@ export const DetalhePessoas: React.FC = () => {
     if (id !== "nova") {
       setIsLoading(true);
 
-      PessoasService.getById(Number(id)).then((result) => {
-        setIsLoading(false);
+      PessoasService.getById(Number(id))
+        .then((result) => {
+          setIsLoading(false);
 
-        if (result instanceof Error) {
-          alert(result.message);
-          navigate("/pessoas");
-        } else {
-          setNome(result.nomeCompleto);
-          console.log(result);
+          if (result instanceof Error) {
+            alert(result.message);
+            navigate("/pessoas");
+          } else {
+            setNome(result.nomeCompleto);
+            console.log(result);
+
+            formRef.current?.setData(result);
         }
       });
     }
@@ -82,23 +113,23 @@ export const DetalhePessoas: React.FC = () => {
       }
     >
       <Form 
-        onSubmit={(dados) => console.log(dados)} 
+        onSubmit={(dados) => handleSave(dados)} 
         //initialData={{}}  
         placeholder={undefined} 
         onPointerEnterCapture={undefined} 
         onPointerLeaveCapture={undefined}
         ref ={formRef} >
         
-        <VTextField name="nomeCompleto" />
-        <VTextField name="email" />
-        <VTextField name="cidadeId" />
+        <VTextField placeholder = "Nome Completo " name="nomeCompleto" />
+        <VTextField placeholder= "Email" name="email" />
+        <VTextField placeholder= "Cidade ID" name="cidadeId" />
 
-        <button type="submit">Submit!</button>
       </Form>
 
-      {/* {isLoading&&(
-                        <LinearProgress variant='indeterminate'/>
-                    )} */}
+      {isLoading&&(
+        <LinearProgress variant='indeterminate'/>
+      )}
+      
     </LayoutBaseDePagina>
   );
 };

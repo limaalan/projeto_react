@@ -60,19 +60,20 @@ const create = async (dados:Omit<IListagemPessoa,'id'>): Promise<number | Error>
     try {
         const urlRelativa = '/pessoas';
         const {data} = await Api.post<IDetalhePessoa>(urlRelativa,dados);
-
-        if (data) return data.id;
+        
+        if (data) return Number(data);
 
         return new Error ("Erro ao criar registro.")
+
     } catch (error) {
         console.error(error);
         return new Error((error as {message:string}).message || 'Erro ao criar registro.');
     }
 };
 
-const updateById = async (id:number , dados : IDetalhePessoa): Promise<void | Error> => {
+const updateById = async (dados :IDetalhePessoa): Promise<void | Error> => {
     try {
-        const urlRelativa = `/pessoas/${id}`;
+        const urlRelativa = `/pessoas/${dados.id}`;
         await Api.put<IDetalhePessoa>(urlRelativa,dados);
     } catch (error) {
         console.error(error);
