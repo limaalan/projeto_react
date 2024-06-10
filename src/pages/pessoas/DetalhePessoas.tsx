@@ -1,21 +1,30 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FerramentasDeDetalhe } from "../../shared/components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
 import { LinearProgress, TextField } from "@mui/material";
 import { Form } from "@unform/web";
 import { VTextField } from "../../shared/forms";
+import { FormHandles } from "@unform/core";
+
+interface IFormData {
+  email: string 
+  cidadeId: string 
+  nomeCompleto:string
+}
 
 export const DetalhePessoas: React.FC = () => {
   const { id = "nova" } = useParams<"id">();
   const navigate = useNavigate();
 
+  const formRef = useRef<FormHandles>(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
 
-  const hadleSave = () => {
-    console.log("Salvando...");
+  const hadleSave = (dados:IFormData) => {
+    console.log(dados);
   };
   const hadleDelete = (id: number) => {
     // eslint-disable-next-line no-restricted-globals
@@ -60,8 +69,8 @@ export const DetalhePessoas: React.FC = () => {
           mostrarBotaoSalvar
           mostrarBotaoSalvarEFechar
           mostrarBotaoVoltar
-          aoClicarEmSalvar={hadleSave}
-          aoClicarEmSalvarEFechar={hadleSave}
+          aoClicarEmSalvar={()=>formRef.current?.submitForm()}
+          aoClicarEmSalvarEFechar={()=>formRef.current?.submitForm()}
           aoClicarEmApagar={() => hadleDelete(Number(id))}
           aoClicarEmNovo={() => {
             navigate("/pessoas/detalhe/nova");
@@ -72,8 +81,18 @@ export const DetalhePessoas: React.FC = () => {
         />
       }
     >
-      <Form onSubmit={console.log} initialData={{}}>
-        <VTextField name="Nome Completo" />
+      <Form 
+        onSubmit={(dados) => console.log(dados)} 
+        //initialData={{}}  
+        placeholder={undefined} 
+        onPointerEnterCapture={undefined} 
+        onPointerLeaveCapture={undefined}
+        ref ={formRef} >
+        
+        <VTextField name="nomeCompleto" />
+        <VTextField name="email" />
+        <VTextField name="cidadeId" />
+
         <button type="submit">Submit!</button>
       </Form>
 
