@@ -1,11 +1,12 @@
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Box, Grid, LinearProgress, Paper, TextField, Typography } from "@mui/material";
+import * as yup from 'yup'
+
+import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
+import { VTextField, VForm , useVForm, IVFormErrors} from "../../shared/forms";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FerramentasDeDetalhe } from "../../shared/components";
-import { useEffect, useRef, useState } from "react";
-import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
-import { Box, Grid, LinearProgress, Paper, TextField, Typography } from "@mui/material";
-import { VTextField, VForm , useVForm} from "../../shared/forms";
-import { FormHandles } from "@unform/core";
 
 interface IFormData {
   email: string 
@@ -13,50 +14,73 @@ interface IFormData {
   nomeCompleto:string
 }
 
+const formValidationSchema:yup.ObjectSchema<IFormData> = yup.object().shape({
+  email : yup.string().required().email(),
+  cidadeId: yup.number().required().integer().moreThan(0),
+  nomeCompleto: yup.string().required().min(3).max(150) ,
+});
+
+
 export const DetalhePessoas: React.FC = () => {
+  const [nome, setNome] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { id = "nova" } = useParams<"id">();
   const navigate = useNavigate();
-
   const {formRef, save, saveAndClose , isSaveAndClose} = useVForm();
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [nome, setNome] = useState("");
+
 
   const handleSave = (dados:IFormData) => {
     
-    setIsLoading(true);
-    if ( id ==='nova'){ // Criando um novo usuário
-      PessoasService
-        .create(dados)
-        .then((result)=>{
-          
-          setIsLoading(false);
-          if (result instanceof Error){ // Se deu erro
-            alert(result.message)
-          
-          } else { // Senão
+    formValidationSchema.validate(dados, { abortEarly : false })
+      .then((dadosValidados)=>{
+        setIsLoading(true);
 
-            navigate(`/pessoas${isSaveAndClose()?'':`/detalhe/${result}`}`)
-          
-          }
+        if ( id ==='nova'){ // Criando um novo usuário
+          PessoasService
+            .create(dadosValidados)
+            .then((result)=>{
+              
+              setIsLoading(false);
+              if (result instanceof Error){ // Se deu erro
+                alert(result.message)
+              
+              } else { // Senão
+    
+                navigate(`/pessoas${isSaveAndClose()?'':`/detalhe/${result}`}`)
+              
+              }
+            })
+          console.log(dadosValidados);
+    
+        } else { // Editando um usuário
+          PessoasService
+            .updateById({id:Number(id), ...dadosValidados })
+            .then((result)=>{
+              
+              setIsLoading(false);
+              if (result instanceof Error){
+                alert(result.message)
+              } else {
+                if (isSaveAndClose()) { 
+                  navigate('/pessoas'); }
+    
+              }
+            })
+        }
+
+      })
+      .catch((errors:yup.ValidationError)=>{
+        const validationErrors :IVFormErrors = { }
+        errors.inner.forEach(error => {
+          if (!error.path) return
+          validationErrors[error.path] = error.message;
         })
-      console.log(dados);
 
-    } else { // Editando um usuário
-      PessoasService
-        .updateById({id:Number(id), ...dados })
-        .then((result)=>{
-          
-          setIsLoading(false);
-          if (result instanceof Error){
-            alert(result.message)
-          } else {
-            if (isSaveAndClose()) { 
-              navigate('/pessoas'); }
+        console.log(errors.inner);
+        formRef.current?.setErrors(validationErrors)
+      })
 
-          }
-        })
-    }
   };
   const hadleDelete = (id: number) => {
     // eslint-disable-next-line no-restricted-globals
@@ -153,7 +177,7 @@ export const DetalhePessoas: React.FC = () => {
                   name="nomeCompleto"
                   onChange={e=>setNome(e.target.value)} />
               </Grid>
-              
+
             </Grid>
 
             <Grid container item direction='row'spacing={2}>
