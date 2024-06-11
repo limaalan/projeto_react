@@ -18,6 +18,11 @@ export const AppRoutes = ()=>{
                 path:'/pagina-inicial'
             },
             {
+                label:'Cidades',
+                icon: 'location_city',
+                path:'/cidades'
+            },
+            {
                 label:'Pessoas',
                 icon: 'people',
                 path:'/pessoas'
@@ -32,8 +37,10 @@ export const AppRoutes = ()=>{
             <Route path ='/pagina-inicial' element = { <Dashboard/> }/>
             <Route path ='/pessoas' element = { <ListagemDePessoas/> }/>
             <Route path ='/pessoas/detalhe/:id' element = { <DetalhePessoas/> }/>
-            {/* <Route path ='/pessoa/detalhe/nova' element = { <p> nova pessoa</p> }/> */}
-            {/* <Route path ='/cidades/detalhe/:id' element = { <Dashboard/> }/> */}
+
+            <Route path ='/cidades' element = { <ListagemDePessoas/> }/>
+            <Route path ='/cidades/detalhe/:id' element = { <DetalhePessoas/> }/>
+
             {/* <Route path = "*" element = {<Navigate to="/pagina-inicial"/>} /> */}
         </Routes>
     )
