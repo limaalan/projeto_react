@@ -4,8 +4,7 @@ import { FerramentasDeDetalhe } from "../../shared/components";
 import { useEffect, useRef, useState } from "react";
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
 import { Box, Grid, LinearProgress, Paper, TextField, Typography } from "@mui/material";
-import { Form } from "@unform/web";
-import { VTextField } from "../../shared/forms";
+import { VTextField, VForm , useVForm} from "../../shared/forms";
 import { FormHandles } from "@unform/core";
 
 interface IFormData {
@@ -18,7 +17,7 @@ export const DetalhePessoas: React.FC = () => {
   const { id = "nova" } = useParams<"id">();
   const navigate = useNavigate();
 
-  const formRef = useRef<FormHandles>(null);
+  const {formRef, save, saveAndClose , isSaveAndClose} = useVForm();
 
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
@@ -26,21 +25,24 @@ export const DetalhePessoas: React.FC = () => {
   const handleSave = (dados:IFormData) => {
     
     setIsLoading(true);
-    if ( id ==='nova'){
+    if ( id ==='nova'){ // Criando um novo usuário
       PessoasService
         .create(dados)
         .then((result)=>{
           
           setIsLoading(false);
-          if (result instanceof Error){
+          if (result instanceof Error){ // Se deu erro
             alert(result.message)
-          } else {
-            console.log(`Testando ${result}`);
-            navigate(`/pessoas/detalhe/${result}`) // Após criar, navega para a página de detalhes da pessoa
+          
+          } else { // Senão
+
+            navigate(`/pessoas${isSaveAndClose()?'':`/detalhe/${result}`}`)
+          
           }
         })
       console.log(dados);
-    } else {
+
+    } else { // Editando um usuário
       PessoasService
         .updateById({id:Number(id), ...dados })
         .then((result)=>{
@@ -49,7 +51,9 @@ export const DetalhePessoas: React.FC = () => {
           if (result instanceof Error){
             alert(result.message)
           } else {
-            //navigate(`/pessoas/detalhe/${id}`) // Após editar, navega para a página de detalhes da pessoa
+            if (isSaveAndClose()) { 
+              navigate('/pessoas'); }
+
           }
         })
     }
@@ -86,6 +90,12 @@ export const DetalhePessoas: React.FC = () => {
             formRef.current?.setData(result);
         }
       });
+    } else {
+      formRef.current?.setData({
+        nomeCompleto: '',
+        email : '',
+        cidadeId : '',
+      })
     }
   }, [id]);
 
@@ -100,8 +110,8 @@ export const DetalhePessoas: React.FC = () => {
           mostrarBotaoSalvar
           mostrarBotaoSalvarEFechar
           mostrarBotaoVoltar
-          aoClicarEmSalvar={()=>formRef.current?.submitForm()}
-          aoClicarEmSalvarEFechar={()=>formRef.current?.submitForm()}
+          aoClicarEmSalvar={save}
+          aoClicarEmSalvarEFechar={saveAndClose}
           aoClicarEmApagar={() => hadleDelete(Number(id))}
           aoClicarEmNovo={() => {
             navigate("/pessoas/detalhe/nova");
@@ -112,8 +122,8 @@ export const DetalhePessoas: React.FC = () => {
         />
       }
     >
-      <Form 
-        onSubmit={(dados) => handleSave(dados)} 
+      <VForm 
+        onSubmit={handleSave} 
         //initialData={{}}  
         placeholder={undefined} 
         onPointerEnterCapture={undefined} 
@@ -143,12 +153,7 @@ export const DetalhePessoas: React.FC = () => {
                   name="nomeCompleto"
                   onChange={e=>setNome(e.target.value)} />
               </Grid>
-
-              {/* Exemplo
-              <Grid item xs={8}>
-                <VTextField disabled= {isLoading} fullWidth placeholder = "Teste" name="teste" />
-              </Grid> */}
-
+              
             </Grid>
 
             <Grid container item direction='row'spacing={2}>
@@ -166,7 +171,7 @@ export const DetalhePessoas: React.FC = () => {
             </Grid>
           </Grid>
         </Box>
-      </Form>
+      </VForm>
 
     </LayoutBaseDePagina>
   );
