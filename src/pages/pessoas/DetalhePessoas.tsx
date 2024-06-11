@@ -36,7 +36,7 @@ export const DetalhePessoas: React.FC = () => {
       .then((dadosValidados)=>{
         setIsLoading(true);
 
-        if ( id ==='nova'){ // Criando um novo usuário
+        if ( id ==='nova'){ // Criando um novo pessoa
           PessoasService
             .create(dadosValidados)
             .then((result)=>{
@@ -53,7 +53,7 @@ export const DetalhePessoas: React.FC = () => {
             })
           console.log(dadosValidados);
     
-        } else { // Editando um usuário
+        } else { // Editando um pessoa
           PessoasService
             .updateById({id:Number(id), ...dadosValidados })
             .then((result)=>{
