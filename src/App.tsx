@@ -12,7 +12,7 @@ export const App = () => {
       <DrawerProvider>
         <BrowserRouter>
           <MenuLateral>
-            <AppRoutes />
+            <AppRoutes/>
           </MenuLateral>
         </BrowserRouter>
       </DrawerProvider>
