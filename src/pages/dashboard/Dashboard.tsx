@@ -1,11 +1,16 @@
-import { LayoutBaseDePagina } from "../../shared/layouts";
-import { FerramentasDaListagem, FerramentasDeDetalhe } from "../../shared/components";
-import { Box, Card, CardContent, Grid, Paper, Typography, debounce } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Box, ButtonBase, Card, CardActionArea, CardContent, CircularProgress, Grid, Paper, Typography, debounce } from "@mui/material";
+
+import { LayoutBaseDePagina } from "../../shared/layouts";
+import { FerramentasDeDetalhe } from "../../shared/components";
 import { CidadesService } from "../../shared/services/api/cidades/CidadesService";
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
+import { useNavigate } from "react-router-dom";
+
 export const Dashboard = () => {
   
+	const navigate = useNavigate();
+
 	const [isLoadingCidades,setIsLoadingCidades] = useState(true);
 	const [totalCountCidades, setTotalCountCidades] = useState(0);
 	const [isLoadingPessoas,setIsLoadingPessoas] = useState(true);
@@ -42,7 +47,7 @@ export const Dashboard = () => {
 	
 	return (
     <LayoutBaseDePagina
-      titulo="Sou o dashboard"
+      titulo="Página Inicial"
       barraDeFerramentas={
         <FerramentasDeDetalhe
         mostrarBotaoNovo={false}
@@ -57,36 +62,39 @@ export const Dashboard = () => {
 				<Grid item container spacing={2} padding={1}>
 					<Grid item xs={12} sm={12} md={6} lg = {4} xl={2}>
 						<Card>
-							
-							<CardContent>
-								<Typography variant="h5" align="center"> Total de Cidades</Typography>
+							<CardActionArea onClick={()=>navigate('/cidades')}>
+								{/* <ButtonBase /> */}
+								<CardContent >
+									<Typography variant="h5" align="center"> Total de Cidades</Typography>
 
-								<Box padding={6} display='flex' justifyContent='center' alignItems='center'>
-									
-									{isLoadingCidades?
-									<Typography variant="h1"> Carregando... </Typography>
-									:<Typography variant="h1"> {totalCountCidades} </Typography>
-									}
+									<Box padding={6} display='flex' justifyContent='center' alignItems='center'>
+										
+										{isLoadingCidades?
+										<CircularProgress variant="indeterminate" size='40%' thickness={2.0}/>								
+										:<Typography variant="h1"> {totalCountCidades} </Typography>
+										}
 
-								</Box>
-							</CardContent>
+									</Box>
+								</CardContent>
+							</CardActionArea>
 
 						</Card>
 					</Grid>
 
 					<Grid item xs={12} sm={12} md={6} lg = {4} xl={2}>
 						<Card>
-							
-							<CardContent>
-								<Typography variant="h5" align="center"> Total de Pessoas</Typography>
+							<CardActionArea onClick={()=>navigate('/pessoas')}>
+								<CardContent>
+									<Typography variant="h5" align="center"> Total de Pessoas</Typography>
 
-								<Box padding={6} display='flex' justifyContent='center' alignItems='center'>
-								{isLoadingPessoas?
-									<Typography variant="h1"> Carregando... </Typography>
-									:<Typography variant="h1"> {totalCountPessoas} </Typography>
-									}
-								</Box>
-							</CardContent>
+									<Box padding={6} display='flex' justifyContent='center' alignItems='center'>
+									{isLoadingPessoas?
+										<CircularProgress variant="indeterminate" size='40%' thickness={2.0}/>
+										:<Typography variant="h1"> {totalCountPessoas} </Typography>
+										}
+									</Box>
+								</CardContent>
+							</CardActionArea>
 
 						</Card>
 					</Grid>
