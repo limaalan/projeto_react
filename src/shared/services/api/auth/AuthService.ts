@@ -6,9 +6,12 @@ interface IAuth {
 
 const auth = async (email:string , password:string):Promise<IAuth|Error> =>{
     try {
-        const { data } = await Api.post<IAuth>('/entrar',{data:{email, password }});
+        const { data } = await Api.post<IAuth>('/entrar',{email:email, senha:password });
 
-        if(data) return data;
+        if(data){
+            console.log(data)
+            return data;
+        } 
 
         return new Error('Erro ao criar o registro');
 
