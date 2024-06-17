@@ -1,29 +1,25 @@
 import { Environment } from "../../../environment";
 import { Api } from "../axios-config";
 
-export interface IListagemPessoa{
+export interface IListagemCidade{
     id:number;
-    email:string;
-    nomeCompleto:string;
-    cidadeId:number;
+    nome:string;
 }
 
-export interface IDetalhePessoa{
+export interface IDetalheCidade{
     id:number;
-    email:string;
-    nomeCompleto:string;
-    cidadeId:number;
+    nome:string;
 }
 
-type IPessoasComTotalCount={
-    data:IListagemPessoa[];
+type ICidadesComTotalCount={
+    data:IListagemCidade[];
     totalCount : number;
 }
 
 
-const getAll = async (page=1 , limit = Environment.LIMITE_DE_LINHAS, filter= '' ): Promise<IPessoasComTotalCount | Error> => {
+const getAll = async (page=1 , limit = Environment.LIMITE_DE_LINHAS, filter= '' ): Promise<ICidadesComTotalCount | Error> => {
     try {
-        const urlRelativa = `/pessoas?page=${page}&limit=${limit}&filter=${filter}`
+        const urlRelativa = `/cidades?page=${page}&limit=${limit}&filter=${filter}`
         const{data,headers} = await Api.get(urlRelativa)
         
         if (data){
@@ -39,9 +35,9 @@ const getAll = async (page=1 , limit = Environment.LIMITE_DE_LINHAS, filter= '' 
     }    
 };
 
-const getById = async (id:number): Promise<IDetalhePessoa | Error> => {
+const getById = async (id:number): Promise<IDetalheCidade | Error> => {
     try {
-        const urlRelativa = `/pessoas/${id}`
+        const urlRelativa = `/cidades/${id}`
         const {data} = await Api.get(urlRelativa)
 
         if(data) return data
@@ -56,10 +52,10 @@ const getById = async (id:number): Promise<IDetalhePessoa | Error> => {
 
 };
 
-const create = async (dados:Omit<IListagemPessoa,'id'>): Promise<number | Error> => {
+const create = async (dados:Omit<IListagemCidade,'id'>): Promise<number | Error> => {
     try {
-        const urlRelativa = '/pessoas';
-        const {data} = await Api.post<IDetalhePessoa>(urlRelativa,dados);
+        const urlRelativa = '/cidades';
+        const {data} = await Api.post<IDetalheCidade>(urlRelativa,dados);
         
         if (data) return Number(data);
 
@@ -71,10 +67,10 @@ const create = async (dados:Omit<IListagemPessoa,'id'>): Promise<number | Error>
     }
 };
 
-const updateById = async (dados :IDetalhePessoa): Promise<void | Error> => {
+const updateById = async (dados :IDetalheCidade): Promise<void | Error> => {
     try {
-        const urlRelativa = `/pessoas/${dados.id}`;
-        await Api.put<IDetalhePessoa>(urlRelativa,dados);
+        const urlRelativa = `/cidades/${dados.id}`;
+        await Api.put<IDetalheCidade>(urlRelativa,dados);
     } catch (error) {
         console.error(error);
         return new Error((error as {message:string}).message || 'Erro ao atualizar registro.');
@@ -84,7 +80,7 @@ const updateById = async (dados :IDetalhePessoa): Promise<void | Error> => {
 
 const deleteById = async (id:number): Promise<void | Error> => {
     try {
-        const urlRelativa = `/pessoas/${id}`;
+        const urlRelativa = `/cidades/${id}`;
         await Api.delete(urlRelativa);
     } catch (error) {
         console.error(error);
@@ -92,7 +88,7 @@ const deleteById = async (id:number): Promise<void | Error> => {
     }
 };
 
-export const PessoasService = {
+export const CidadesService = {
   getAll,
   getById,
   create,

@@ -1,19 +1,28 @@
 import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./routes";
-import { AppThemeProvider } from "./shared/context/ThemeContext";
-import { MenuLateral } from "./shared/components";
-import { DrawerProvider } from "./shared/context";
+
+import './shared/forms/TraducoesYup'
+import { AppThemeProvider, AuthProvider, DrawerProvider} from "./shared/context";
+import { Login, MenuLateral } from "./shared/components";
 
 export const App = () => {
   return (
-    <AppThemeProvider>
-      <DrawerProvider>
-        <BrowserRouter>
-          <MenuLateral>
-            <AppRoutes />
-          </MenuLateral>
-        </BrowserRouter>
-      </DrawerProvider>
-    </AppThemeProvider>
+    <AuthProvider>
+      <AppThemeProvider>
+        <Login>
+
+        <DrawerProvider>
+          <BrowserRouter>
+
+            <MenuLateral>
+              <AppRoutes/>
+            </MenuLateral>
+          
+          </BrowserRouter>
+        </DrawerProvider>
+
+        </Login>
+      </AppThemeProvider>
+    </AuthProvider>
   );
 };

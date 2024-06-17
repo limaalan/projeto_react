@@ -5,7 +5,8 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { useDrawerContext} from '../shared/context';
 import { useEffect } from 'react';
-import { Dashboard, ListagemDePessoas } from '../pages';
+import { Dashboard, ListagemDePessoas, DetalhePessoas, DetalheCidades } from '../pages';
+import { ListagemDeCidades } from '../pages/cidades/ListagemDeCidades';
 
 export const AppRoutes = ()=>{
     const {setDrawerOptions} = useDrawerContext();
@@ -16,6 +17,11 @@ export const AppRoutes = ()=>{
                 label:'Página Inicial',
                 icon: 'home',
                 path:'/pagina-inicial'
+            },
+            {
+                label:'Cidades',
+                icon: 'location_city',
+                path:'/cidades'
             },
             {
                 label:'Pessoas',
@@ -31,8 +37,12 @@ export const AppRoutes = ()=>{
         <Routes>
             <Route path ='/pagina-inicial' element = { <Dashboard/> }/>
             <Route path ='/pessoas' element = { <ListagemDePessoas/> }/>
-            {/* <Route path ='/cidades/detalhe/:id' element = { <Dashboard/> }/> */}
-            <Route path = "*" element = {<Navigate to="/pagina-inicial"/>} />
+            <Route path ='/pessoas/detalhe/:id' element = { <DetalhePessoas/> }/>
+
+            <Route path ='/cidades' element = { <ListagemDeCidades/> }/>
+            <Route path ='/cidades/detalhe/:id' element = { <DetalheCidades/> }/>
+
+            {/* <Route path = "*" element = {<Navigate to="/pagina-inicial"/>} /> */}
         </Routes>
     )
 

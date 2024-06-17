@@ -39,6 +39,7 @@ export const FerramentasDaListagem: React.FC<IFerramentasDaListagemProps> = ({
           value={textoDaBusca}
           onChange={(e) => aoMudarTextoDeBusca?.(e.target.value)}
           placeholder={Environment.INPUT_DE_BUSCA}
+          fullWidth
         />
       )}
 
