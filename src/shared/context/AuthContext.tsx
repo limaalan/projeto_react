@@ -18,7 +18,7 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
 	const LOCAL_STORAGE_KEY__APP_ACCESS_TOKEN = 'APP_ACCESS_TOKEN'
 	useEffect(()=>{
 		const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY__APP_ACCESS_TOKEN)
-		accessToken? setAccessToken(JSON.parse(accessToken)):setAccessToken(undefined)
+		accessToken? setAccessToken(accessToken):setAccessToken(undefined)
 	},[])
 
   const handleLogin = useCallback(async (email: string, password: string) => {
