@@ -35,7 +35,7 @@ export const ListagemDePessoas: React.FC = () => {
           setIsLoading(false);
             if(result instanceof Error){ alert (result.message);}
             else {
-              (console.log(result));
+              // (console.log(result));
               setRows(result.data)
               setTotalCount(result.totalCount)
             }

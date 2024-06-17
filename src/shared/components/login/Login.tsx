@@ -60,8 +60,10 @@ export const Login:React.FC<ILoginProps> = ({children}) => {
             await login(email, password) // Se fez login, não está mais carregando
             setIsLoading(false)
                 
-         } catch{
-            console.log('deu ruim')
+         } catch{ 
+            //TODO : Adicionar exibição do erro retornado pelo yup
+            alert('Dados inválidos');
+            console.log('Dados inválidos');
          } 
 
     }

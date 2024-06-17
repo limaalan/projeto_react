@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Grid, LinearProgress, Paper, TextField, Typography } from "@mui/material";
+import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 import * as yup from 'yup'
 
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
@@ -43,16 +43,17 @@ export const DetalhePessoas: React.FC = () => {
             .then((result)=>{
               
               setIsLoading(false);
-              if (result instanceof Error){ // Se deu erro
+
+              if (result instanceof Error){ 
                 alert(result.message)
               
-              } else { // Senão
+              } else { 
     
                 navigate(`/pessoas${isSaveAndClose()?'':`/detalhe/${result}`}`)
               
               }
             })
-          console.log(dadosValidados);
+          // console.log(dadosValidados);
     
         } else { // Editando um pessoa
           PessoasService
@@ -78,7 +79,7 @@ export const DetalhePessoas: React.FC = () => {
           validationErrors[error.path] = error.message;
         })
 
-        console.log(errors.inner);
+        // console.log(errors.inner);
         formRef.current?.setErrors(validationErrors)
       })
 
@@ -110,7 +111,7 @@ export const DetalhePessoas: React.FC = () => {
             navigate("/pessoas");
           } else {
             setNome(result.nomeCompleto);
-            console.log(result);
+            // console.log(result);
 
             formRef.current?.setData(result);
         }
@@ -149,7 +150,6 @@ export const DetalhePessoas: React.FC = () => {
     >
       <VForm 
         onSubmit={handleSave} 
-        //initialData={{}}  
         placeholder={undefined} 
         onPointerEnterCapture={undefined} 
         onPointerLeaveCapture={undefined}

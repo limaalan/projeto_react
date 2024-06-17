@@ -9,7 +9,6 @@ const auth = async (email:string , password:string):Promise<IAuth|Error> =>{
         const { data } = await Api.post<IAuth>('/entrar',{email:email, senha:password });
 
         if(data){
-            console.log(data)
             return data;
         } 
 

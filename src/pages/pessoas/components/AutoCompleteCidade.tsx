@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import { CidadesService } from "../../../shared/services/api/cidades/CidadesService";
 import { useDebounce } from "../../../shared/hooks";
 import { useField } from "@unform/core";
-import { clear } from "console";
 
 type TAutoCompleteOption = {
   id : number , 
@@ -21,7 +20,7 @@ export const AutoCompleteCidade:React.FC<IAutoCompleteCidadeProps> = ({isExterna
   const [isLoading, setIsLoading] = useState(false);
   const {debounce} = useDebounce();
   const [busca, setBusca] = useState('');
-  const [selectedId , setSelectedId] = useState<number|undefined>(undefined);
+  const [selectedId , setSelectedId] = useState<number|undefined>(defaultValue);
 
   const autoCompleteSelectedOption = useMemo(()=>{
     if (!selectedId)return null
@@ -48,10 +47,10 @@ export const AutoCompleteCidade:React.FC<IAutoCompleteCidadeProps> = ({isExterna
           // Finalizou a consulta, muda 'isLoading' pra falso
           setIsLoading(false);
             if(result instanceof Error){
-              // alert (result.message);
+              alert (result.message);
             }
             else {
-              console.log(result);
+              // console.log(result);
               setOpcoes(result.data.map(cidade =>({id:cidade.id , label:cidade.nome})))
             }
         })
@@ -87,11 +86,7 @@ export const AutoCompleteCidade:React.FC<IAutoCompleteCidadeProps> = ({isExterna
           helperText={error}
           
         />
-      )}
-      
+      )}      
     />
-
-  
-  ) 
-    
+  ) ;
 };
