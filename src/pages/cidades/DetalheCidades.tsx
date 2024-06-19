@@ -51,7 +51,6 @@ export const DetalheCidades: React.FC = () => {
               );
             }
           });
-          console.log(dadosValidados);
         } else {
           // Editando uma cidade
           CidadesService.updateById({ id: Number(id), ...dadosValidados }).then(
@@ -75,7 +74,7 @@ export const DetalheCidades: React.FC = () => {
           validationErrors[error.path] = error.message;
         });
 
-        console.log(errors.inner);
+        // console.log(errors.inner);
         formRef.current?.setErrors(validationErrors);
       });
   };
@@ -105,7 +104,7 @@ export const DetalheCidades: React.FC = () => {
           navigate("/cidades");
         } else {
           setNome(result.nome);
-          console.log(result);
+          // console.log(result);
 
           formRef.current?.setData(result);
         }
