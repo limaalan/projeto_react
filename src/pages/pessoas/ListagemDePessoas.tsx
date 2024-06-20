@@ -6,7 +6,6 @@ import { IListagemPessoa, PessoasService } from "../../shared/services/api/pesso
 import { FerramentasDaListagem } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { useDebounce } from "../../shared/hooks";
-import { Environment } from "../../shared/environment";
 
 export const ListagemDePessoas: React.FC = () => {
   const [searchParams , setSearchParams] = useSearchParams();
@@ -108,7 +107,7 @@ export const ListagemDePessoas: React.FC = () => {
           </TableBody>
 
           {totalCount===0 && !isLoading &&(
-            <caption>{Environment.LISTAGEM_VAZIA}</caption>
+            <caption>{process.env.REACT_APP_LISTAGEM_VAZIA}</caption>
           )}
 
           <TableFooter>
@@ -119,12 +118,12 @@ export const ListagemDePessoas: React.FC = () => {
                     </TableCell>
                   </TableRow>
                 )}
-                {totalCount> Environment.LIMITE_DE_LINHAS && !isLoading &&(
+                {totalCount> Number(process.env.REACT_APP_LIMITE_DE_LINHAS) && !isLoading &&(
 
                   <TableRow>
                     <TableCell colSpan={3}>
                       <Pagination 
-                        count = {Math.ceil(totalCount/Environment.LIMITE_DE_LINHAS)}
+                        count = {Math.ceil(totalCount/ Number(process.env.REACT_APP_LIMITE_DE_LINHAS))}
                         page = {pagina}
                         onChange= {(e,newPage)=>{
                           setSearchParams({busca, pagina:newPage.toString()}, {replace:true})

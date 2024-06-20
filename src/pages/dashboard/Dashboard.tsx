@@ -24,7 +24,7 @@ export const Dashboard = () => {
 				setIsLoadingCidades(false);
 					if(result instanceof Error){ alert (result.message);}
 					else {
-						(console.log(result));
+						// (console.log(result));
 						setTotalCountCidades(result.totalCount)
 					}
 			})
@@ -38,7 +38,7 @@ export const Dashboard = () => {
 				setIsLoadingPessoas(false);
 					if(result instanceof Error){ alert (result.message);}
 					else {
-						(console.log(result));
+						// (console.log(result));
 						setTotalCountPessoas(result.totalCount)
 					}
 			})

@@ -1,7 +1,6 @@
 import { useCallback, useRef } from "react";
-import { Environment } from "../environment";
 
-export const useDebounce= (delay = Environment.DEBOUNCE_TIME , notDelayInFirstTime = true) =>{
+export const useDebounce= (delay = Number(process.env.REACT_APP_DEBOUNCE_TIME) , notDelayInFirstTime = true) =>{
     const debouncing = useRef<NodeJS.Timeout>();
     const isFirstTime = useRef(notDelayInFirstTime);
 
