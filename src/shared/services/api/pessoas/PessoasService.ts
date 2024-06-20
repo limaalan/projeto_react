@@ -1,4 +1,3 @@
-import { Environment } from "../../../environment";
 import { Api } from "../axios-config";
 
 export interface IListagemPessoa{
@@ -21,7 +20,7 @@ type IPessoasComTotalCount={
 }
 
 
-const getAll = async (page=1 , limit = Environment.LIMITE_DE_LINHAS, filter= '' ): Promise<IPessoasComTotalCount | Error> => {
+const getAll = async (page=1 , limit = Number(process.env.REACT_APP_LIMITE_DE_LINHAS), filter= '' ): Promise<IPessoasComTotalCount | Error> => {
     try {
         const urlRelativa = `/pessoas?page=${page}&limit=${limit}&filter=${filter}`
         const{data,headers} = await Api.get(urlRelativa)
@@ -29,7 +28,7 @@ const getAll = async (page=1 , limit = Environment.LIMITE_DE_LINHAS, filter= '' 
         if (data){
             return {
                 data,
-                totalCount:Number(headers['x-total-count']|| Environment.LIMITE_DE_LINHAS),}
+                totalCount:Number(headers['x-total-count']|| Number(process.env.REACT_APP_LIMITE_DE_LINHAS)),}
         }
         return new Error("Erro a listar os registro.");
     } catch (error) {

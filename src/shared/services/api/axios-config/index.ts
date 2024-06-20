@@ -1,9 +1,8 @@
 import axios from "axios";
 import { errorInterceptor, responseInterceptor } from "./interceptors";
-import { Environment } from "../../../environment";
 
 const Api = axios.create({
-  baseURL: Environment.URL_BASE,
+  baseURL: process.env.REACT_APP_URL_BASE,
 //   headers: {
     // Authorization: `Bearer ${localStorage.getItem("APP_ACCESS_TOKEN")}`,
     // Authorization:`Bearer ${JSON.parse(localStorage.getItem('APP_ACCESS_TOKEN') || '' )} `

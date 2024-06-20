@@ -6,7 +6,6 @@ import { IListagemCidade, CidadesService } from "../../shared/services/api/cidad
 import { FerramentasDaListagem } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { useDebounce } from "../../shared/hooks";
-import { Environment } from "../../shared/environment";
 
 export const ListagemDeCidades: React.FC = () => {
   const [searchParams , setSearchParams] = useSearchParams();
@@ -106,7 +105,7 @@ export const ListagemDeCidades: React.FC = () => {
           </TableBody>
 
           {totalCount===0 && !isLoading &&(
-            <caption>{Environment.LISTAGEM_VAZIA}</caption>
+            <caption>{process.env.REACT_APP_LISTAGEM_VAZIA}</caption>
           )}
 
           <TableFooter>
@@ -117,12 +116,12 @@ export const ListagemDeCidades: React.FC = () => {
                     </TableCell>
                   </TableRow>
                 )}
-                {totalCount> Environment.LIMITE_DE_LINHAS && !isLoading &&(
+                {totalCount> Number(process.env.REACT_APP_LIMITE_DE_LINHAS) && !isLoading &&(
 
                   <TableRow>
                     <TableCell colSpan={2}>
                       <Pagination 
-                        count = {Math.ceil(totalCount/Environment.LIMITE_DE_LINHAS)}
+                        count = {Math.ceil(totalCount/Number(process.env.REACT_APP_LIMITE_DE_LINHAS))}
                         page = {pagina}
                         onChange= {(e,newPage)=>{
                           setSearchParams({busca, pagina:newPage.toString()}, {replace:true})
